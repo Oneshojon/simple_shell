@@ -1,11 +1,12 @@
 /**
- *child_father_pid - Differentiates child pid from parent pid
- *
+ *wait_father - suspends execution of parent process untill
+ *		Child process completes
  *Return: 0
  */
-int child_father_pid(void)
+int wait_father(void)
 {
-	pid_t my_pid, child_pid;
+	pid_t child_pid;
+	int status;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -13,11 +14,15 @@ int child_father_pid(void)
 		perror("Error");
 		return (1);
 	}
-	my_pid = getpid();
-	printf("My pid is: %u\n", my_pid);
 	if (child_pid == 0)
-		printf("(%u) Nooooooo!\n", my_pid);
+	{
+		printf("Wait for me, wait for me\n");
+		sleep(3);
+	}
 	else
-		printf("(%u) %u, I am your father\n", my_pid, child_pid);
+	{
+		wait(&status);
+		printf("Oh, it's all better now\n");
+	}
 	return (0);
 }
