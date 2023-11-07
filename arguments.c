@@ -35,7 +35,7 @@ int read_line(void)
 	ssize_t n;
 
 	display_prompt();
-	while ((n = getline(&line, &len, stdin)) != -1)
+	while ((n = getline(&line, &n, stdin)) != -1)
 	{
 		if (n == 1 && line[0] == '\n')
 		{
@@ -43,6 +43,7 @@ int read_line(void)
 			continue;
 		}
 
+		line[len - 1] == '\0';
 		_puts("You entered: ");
 		_puts(line);
 		display_prompt();
@@ -60,11 +61,11 @@ int read_line(void)
  *
  *Return: A ponter to the array
  */
-char **split_string(const char *input, const char *delimiter, int *word_count)
+char **split_string(char *input, const char *delimiter, int *word_count)
 {
 	int count = 0;
 	char **words = NULL;
-	char *token, input_copy;
+	char *token, *input_copy;
 
 	input_copy = _strdup(input);
 	if (!input_copy)
@@ -75,7 +76,7 @@ char **split_string(const char *input, const char *delimiter, int *word_count)
 	token = strtok(input_copy, delimiter);
 	while (token != NULL)
 	{
-		words = realoc(words, (count + 1) * sizeof(char *));
+		words = realloc(words, (count + 1) * sizeof(char *));
 		if (!words)
 		{
 			perror("realoc");
@@ -131,7 +132,8 @@ char **split_string2(char *str)
 		words = realloc(words, (count + 1) * sizeof(char *));
 		if (!words)
 		{
-			free(str_dup), free(word), return (NULL);
+			free(str_dup), free(word);
+			return (NULL);
 		}
 		words[count] = _strdup(word);
 		if (!words[count])
@@ -141,5 +143,6 @@ char **split_string2(char *str)
 		}
 		count++, i++;
 	}
-	free(str_dup), return (words);
+	free(str_dup);
+	return (words);
 }
