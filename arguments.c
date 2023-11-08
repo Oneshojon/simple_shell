@@ -28,29 +28,28 @@ int print_args(int ac, char **av)
  *
  *Return: Nothing
  */
-int read_line(void)
+char *read_line(void)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t n;
 
 	display_prompt();
-	while ((n = getline(&line, &n, stdin)) != -1)
+	n = getline(&line, &len, stdin);
+	if (n == -1)
 	{
-		if (n == 1 && line[0] == '\n')
-		{
-			display_prompt();
-			continue;
-		}
-
-		line[len - 1] == '\0';
-		_puts("You entered: ");
-		_puts(line);
-		display_prompt();
+		_puts("\n");
+		free(line);
+		return(NULL);
 	}
-
-	free(line);
-	return (0);
+	if (n == 1 && line[0] == '\n')
+	{
+		free(line);
+		return (NULL);
+	}
+	if (line[n - 1] == '\n')
+		line[n - 1] = '\0';
+	return (line);
 }
 /**
  *split_string - Splits a string and returns an array of each word of

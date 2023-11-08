@@ -1,9 +1,11 @@
+#include "shell.h"
+
 /**
- *wait_father - suspends execution of parent process untill
+ *execute - suspends execution of parent process untill
  *		Child process completes
  *Return: 0
  */
-int wait_father(void)
+int execute(char *argv[])
 {
 	pid_t child_pid;
 	int status;
@@ -15,14 +17,16 @@ int wait_father(void)
 		return (1);
 	}
 	if (child_pid == 0)
-	{
-		printf("Wait for me, wait for me\n");
-		sleep(3);
+	{ 
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror(argv[0]);
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
 		wait(&status);
-		printf("Oh, it's all better now\n");
 	}
 	return (0);
 }

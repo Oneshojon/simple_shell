@@ -5,6 +5,9 @@
 #include <stddef.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 /**** Printer ****/
 void _puts(char *ptr);
@@ -24,11 +27,20 @@ void display_prompt(void);
 
 /**   ARGUMENTS   **/
 int print_args(int ac, char **av);
-int read_line(void);
-char **split_string(const char *input, const char *delimiter, int *word_count);
+char *read_line(void);
+char **split_string(char *input, const char *delimiter, int *word_count);
 char **split_string2(char *str);
 
-/** EXECUTIION OF PROGRAM **/
+/** GETLINE.C **/
+ssize_t _getline(char **ptr, size_t n, FILE *stream);
+char *read_file(FILE *stream);
 
+/** EXECUTIION OF PROGRAM **/
+int exec_program(void);
+int create_process(void);
+int child_father_pid(void);
+int exec_5x(void);
+int wait_father(void);
+int execute(char *argv[]);
 
 #endif
