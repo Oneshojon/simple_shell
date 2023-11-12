@@ -19,6 +19,7 @@ void _putchar(char c);
 /*** UTILITIES! **/
 unsigned int _strlen(char *str);
 char *_strdup(char *str);
+int _strcmp(const char *str1, const char *str2);
 
 /***PID****/
 void get_ppid(void);
@@ -49,6 +50,10 @@ extern char **environ;
 char *find_executable(const char *filename);
 int file_exists(int argc, char *argv[]);
 int env_main(int ac, char **av);
+char *_getenv(const char *name);
+int extern_vs_main(int ac, char **av, char **env);
+int extern_env(void);
+void dir_in_path(void);
 
 
 #endif
