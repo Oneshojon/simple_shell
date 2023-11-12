@@ -54,6 +54,12 @@ char *_getenv(const char *name);
 int extern_vs_main(int ac, char **av, char **env);
 int extern_env(void);
 void dir_in_path(void);
+/**   STRUCT FOR LINKED LIST   **/
+typedef struct linkeddict
+{
+	char *dir;
+	struct linkeddict *next;
+} linkedd1;
 
 
 #endif
