@@ -60,6 +60,10 @@ typedef struct linkeddict
 	char *dir;
 	struct linkeddict *next;
 } linkedd1;
+linkedd1 *createNode(const char *dir);
+void insertNode(linkedd1 **head, const char *dir);
+void printList(linkedd1 *head);
+int main2(void);
 
 
 #endif
