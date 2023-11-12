@@ -45,6 +45,7 @@ int wait_father(void);
 int execute(char *argv[]);
 /**  env/PATH  **/
 #define PATH_MAX 4096
+extern char **environ;
 char *find_executable(const char *filename);
 int file_exists(int argc, char *argv[]);
 int env_main(int ac, char **av);

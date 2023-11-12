@@ -82,7 +82,7 @@ char *find_executable(const char *filename)
  *
  *Return: 0
  */
-int main(int argc, char *argv[])
+int file_exists(int argc, char *argv[])
 {
 	int i;
 

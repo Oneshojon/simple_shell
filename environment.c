@@ -8,7 +8,7 @@
  *
  *Return: 0
  */
-int main(int ac, char **av, char **env)
+int main_env(int ac, char **av, char **env)
 {
 	unsigned int i = 0;
 
@@ -16,6 +16,21 @@ int main(int ac, char **av, char **env)
 	{
 		printf("%s\n", env[i]);
 		i++;
+	}
+	return (0);
+}
+/**
+ *main - prints the encironnment using global variable
+ *
+ *Return: 0
+ */
+int main(void)
+{
+	char **env;
+
+	for (env = environ; *env != NULL; env++)
+	{
+		printf("%s\n", *env);
 	}
 	return (0);
 }
