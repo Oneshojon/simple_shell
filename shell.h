@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 /**** Printer ****/
 void _puts(char *ptr);
@@ -42,5 +43,11 @@ int child_father_pid(void);
 int exec_5x(void);
 int wait_father(void);
 int execute(char *argv[]);
+/**  env/PATH  **/
+#define PATH_MAX 4096
+char *find_executable(const char *filename);
+int file_exists(int argc, char *argv[]);
+int env_main(int ac, char **av);
+
 
 #endif
