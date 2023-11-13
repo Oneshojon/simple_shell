@@ -71,7 +71,7 @@ void printList(linkedd1 *head)
  */
 int main2(void)
 {
-	char *path = getEnv("PATH");
+	char *path = _getenv("PATH");
 	linkedd1 *head = NULL;
 	char *token;
 	linkedd1 *temp;

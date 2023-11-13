@@ -10,9 +10,8 @@
  */
 int extern_vs_main(int ac, char **av, char **env)
 {
-	unsigned int i = 0;
 	char **envx = environ;
-
+	(void)ac, (void)av;
 
 	if (envx == env)
 		printf("They point to the same adress\n");

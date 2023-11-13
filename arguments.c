@@ -26,30 +26,38 @@ int print_args(int ac, char **av)
 /**
  *read_line - Prints the arguments entered
  *
- *Return: Nothing
+ *Return: pointer to line recovered
  */
 char *read_line(void)
 {
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t n;
+	char *buffer = NULL;
+	size_t buff_size = 0;
+	ssize_t characters_read;
 
-	display_prompt();
-	n = getline(&line, &len, stdin);
-	if (n == -1)
+	characters_read = getline(&buffer, &buff_size, stdin);
+	if (characters_read == -1)
 	{
-		_puts("\n");
-		free(line);
-		return(NULL);
+		if (feof(stdin))
+		{
+			_puts("\n");
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			perror("getline");
+			exit(EXIT_FAILURE);
+		}
 	}
-	if (n == 1 && line[0] == '\n')
+	if (characters_read == 1 && buffer[0] == '\n')
 	{
-		free(line);
+		free(buffer);
 		return (NULL);
 	}
-	if (line[n - 1] == '\n')
-		line[n - 1] = '\0';
-	return (line);
+	if (characters_read > 1 && buffer[characters_read - 1] == '\n')
+	{
+		buffer[characters_read - 1] = '\0';
+	}
+	return (buffer);
 }
 /**
  *split_string - Splits a string and returns an array of each word of

@@ -40,6 +40,7 @@ int env_main(int ac, char **av)
  */
 char *find_executable(const char *filename)
 {
+	struct stat st;
 	char *path_env = getenv("PATH"),  *executable_path, *path, *token;
 
 	if (path_env == NULL)
@@ -64,8 +65,6 @@ char *find_executable(const char *filename)
 			exit(EXIT_FAILURE);
 		}
 		snprintf(executable_path, PATH_MAX, "%s/%s", token, filename);
-		struct stat st;
-
 		if (stat(executable_path, &st) == 0 && S_ISREG(st.st_mode) && (st.st_mode &
 					S_IXUSR))
 			return (executable_path);
@@ -88,7 +87,7 @@ int file_exists(int argc, char *argv[])
 
 	if (argc < 2)
 	{
-		fprintf(stderr, "Usage: %s filename ...\n", argv[i]);
+		fprintf(stderr, "Usage: %s filename ...\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	for (i = 1; i < argc; i++)
