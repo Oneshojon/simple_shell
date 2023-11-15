@@ -21,19 +21,35 @@ int extern_vs_main(int ac, char **av, char **env)
 	return (0);
 }
 /**
- *extern_env - prints the encironnment using global variable
+ *get_environment_array - Gets the encironnment using global variable
  *
- *Return: 0
+ *Return: An arry
  */
-int extern_env(void)
+char **get_environment_array(void)
 {
-	char **env;
+	char **envarr;
+	int count = 0, i;
 
-	for (env = environ; *env != NULL; env++)
+	while (environ[count] != NULL)
+		count++;
+	envarr = malloc((count + 1) * sizeof(char *));
+	if (envarr == NULL)
 	{
-		printf("%s\n", *env);
+		perror("malloc");
+		return (NULL);
 	}
-	return (0);
+	for (i = 0; i < count; i++)
+	{
+		envarr[i] = strdup(environ[i]);
+		if (envarr[i] == NULL)
+		{
+			perror("strdup");
+			free_words(envarr, i);
+			return (NULL);
+		}
+	}
+	envarr[count] = NULL;
+	return (envarr);
 }
 /**
  *_getenv - Gets the value of the environmental variable name

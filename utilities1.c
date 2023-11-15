@@ -31,7 +31,7 @@ char *_strdup(char *str)
 		return (NULL);
 	while (str[index] != '\0')
 	{
-		duplicate = realloc(duplicate, (index + 2) * sizeof(char));
+		duplicate = realloc(duplicate, (index + 1) * sizeof(char));
 		if (!duplicate)
 			return (NULL);
 		duplicate[index] = str[index];
@@ -56,7 +56,7 @@ int _strcmp(const char *str1, const char *str2)
 	while (str1[i] != '\0' && str2[i] != '\0')
 	{
 		if (str1[i] != str2[i])
-			return str1[i] - str2[i];
+			return (str1[i] - str2[i]);
 		i++;
 	}
 

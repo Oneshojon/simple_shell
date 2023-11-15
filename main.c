@@ -1,34 +1,30 @@
 #include "shell.h"
-
-int main()
+/**
+ *main - Entry point for major programss
+ *
+ *Return: Status
+ */
+int main(void)
 {
 	char *input, **argv;
-	int count = 0, i;
 
-	display_prompt();
+	/*display_prompt();*/
 	while (1)
 	{
 		input = read_line();
-		if (input == NULL)
-		{
-			display_prompt();
-			continue;
-		}
-		argv = split_string(input, " ", &count);
+		if (!input)
+			break;
+		argv = split_string(input, " \t\n\a\r");
 
-		if (argv == NULL || count == 0)
+		if (argv == NULL)
 		{
 			free(input);
+			free_environment_array(argv);
 			continue;
 		}
 		execute(argv);
 		free(input);
-		for (i = 0; i < count; i++)
-		{
-			free(argv[i]);
-		}
-		free(argv);
-		display_prompt();
+		free_environment_array(argv);
 	}
 	return (EXIT_SUCCESS);
 }

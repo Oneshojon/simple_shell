@@ -26,12 +26,18 @@ void get_ppid(void);
 
 /** PROMPT **/
 void display_prompt(void);
+/** FREE  **/
+void free_words(char **words, int count);
+void free_environment_array(char **envp);
 
 /**   ARGUMENTS   **/
 int print_args(int ac, char **av);
 char *read_line(void);
-char **split_string(char *input, const char *delimiter, int *word_count);
+char **split_string(char *input, const char *delimiter);
 char **split_string2(char *str);
+char *trim_spaces(char *str);
+#include <ctype.h>
+
 
 /** GETLINE.C **/
 ssize_t _getline(char **ptr, size_t n, FILE *stream);
@@ -54,6 +60,7 @@ char *_getenv(const char *name);
 int extern_vs_main(int ac, char **av, char **env);
 int extern_env(void);
 void dir_in_path(void);
+char **get_environment_array(void);
 /**   STRUCT FOR LINKED LIST   **/
 typedef struct linkeddict
 {

@@ -28,35 +28,26 @@ int print_args(int ac, char **av)
  *
  *Return: pointer to line recovered
  */
+static char *last_input;
 char *read_line(void)
 {
 	char *buffer = NULL;
 	size_t buff_size = 0;
 	ssize_t characters_read;
 
-	characters_read = getline(&buffer, &buff_size, stdin);
-	if (characters_read == -1)
+	while (buffer == NULL || buffer[0] == '\0' || isspace(buffer[0]))
 	{
-		if (feof(stdin))
+		display_prompt();
+		characters_read = getline(&buffer, &buff_size, stdin);
+		if (characters_read == -1)
 		{
+			free(buffer);
 			_puts("\n");
-			exit(EXIT_SUCCESS);
+			return (NULL);
 		}
-		else
-		{
-			perror("getline");
-			exit(EXIT_FAILURE);
-		}
-	}
-	if (characters_read == 1 && buffer[0] == '\n')
-	{
-		free(buffer);
-		return (NULL);
-	}
-	if (characters_read > 1 && buffer[characters_read - 1] == '\n')
-	{
 		buffer[characters_read - 1] = '\0';
 	}
+	last_input = buffer;
 	return (buffer);
 }
 /**
@@ -64,17 +55,16 @@ char *read_line(void)
  *		 string
  *@input: The string to be tokenized
  *@delimiter: Where to split
- *@word_count: Number of words in the array
  *
  *Return: A ponter to the array
  */
-char **split_string(char *input, const char *delimiter, int *word_count)
+char **split_string(char *input, const char *delimiter)
 {
 	int count = 0;
 	char **words = NULL;
-	char *token, *input_copy;
+	char *token = NULL, *input_copy;
 
-	input_copy = _strdup(input);
+	input_copy = strdup(input);
 	if (!input_copy)
 	{
 		perror("strdup");
@@ -86,22 +76,23 @@ char **split_string(char *input, const char *delimiter, int *word_count)
 		words = realloc(words, (count + 1) * sizeof(char *));
 		if (!words)
 		{
-			perror("realoc");
 			free(input_copy);
 			return (NULL);
 		}
-		words[count] = _strdup(token);
+		words[count] = strdup(token);
 		if (!words[count])
 		{
-			perror("_strdup");
 			free(input_copy);
+			free_words(words, count - 1);
 			return (NULL);
 		}
-		count++;
 		token = strtok(NULL, delimiter);
+		count++;
 	}
 	free(input_copy);
-	*word_count = count;
+	words = realloc(words, (count + 1) * sizeof(char *));
+	if (!words)
+		return (NULL);
 	return (words);
 }
 /**
@@ -152,4 +143,30 @@ char **split_string2(char *str)
 	}
 	free(str_dup);
 	return (words);
+}
+/**
+ *trim_spaces - Trims spaces preceeding an arguments in str
+ *@str: The provided string
+ *
+ *Return: pointer to non spaces preceeded  string
+ */
+char *trim_spaces(char *str)
+{
+	char *end;
+
+	while (isspace((unsigned char)*str))
+	{
+		str++;
+	}
+	/* If all spaces, return an empty string*/
+	if (*str == '\0')
+		return (str);
+	end = str + strlen(str) - 1;
+	while (end > str && isspace((unsigned char)*end))
+	{
+		end--;
+	}
+	*(end + 1) = '\0';
+
+	return (str);
 }

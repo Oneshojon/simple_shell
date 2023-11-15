@@ -3,38 +3,38 @@
 /**
  *execute - suspends execution of parent process untill
  *		Child process completes
+ *@argv: pointer to array of arguments
  *Return: 0
  */
 int execute(char *argv[])
 {
 	pid_t child_pid;
 	int status = 0;
-	char *envp[2], *path_dir = _getenv("PATH");
+	char **envp;
 
 	if (argv == NULL || *argv == NULL)
 		return (0);
+	envp = get_environment_array();
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		perror(argv[0]);
+		perror("./hsh");
 		return (1);
 	}
 	if (child_pid == 0)
-	{ 
-		envp[0] = path_dir, envp[1] = NULL;
+	{
 		if (execve(argv[0], argv, envp) == -1)
 		{
-			perror(argv[0]);
+			perror("./hsh"), free_environment_array(argv);
+			free_environment_array(envp);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
 		wait(&status);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-		{
-			waitpid(child_pid, &status, WUNTRACED);
-		}
+		free_environment_array(envp);
+
 	}
-	return (1);
+	return (status);
 }

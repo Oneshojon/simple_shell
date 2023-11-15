@@ -75,7 +75,7 @@ char *find_executable(const char *filename)
 	return (NULL);
 }
 /**
- *main - Entry point for the ealier program
+ *file_exists - Entry point for the ealier program
  *@argc: count of argument
  *@argv: Array to pointers to arguments
  *
