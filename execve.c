@@ -10,7 +10,7 @@ int execute(char *argv[])
 {
 	pid_t child_pid;
 	int status = 0;
-	char **envp;
+	char **envp, *path = NULL;
 
 	if (argv == NULL || *argv == NULL)
 		return (0);
@@ -23,7 +23,11 @@ int execute(char *argv[])
 	}
 	if (child_pid == 0)
 	{
-		if (execve(argv[0], argv, envp) == -1)
+		if (argv[0][0] != '/')
+			path = find_executable(argv[0]);
+		if (path == NULL)
+			path = argv[0];
+		if (execve(path, argv, envp) == -1)
 		{
 			perror("./hsh");
 			free_environment_array(argv);
