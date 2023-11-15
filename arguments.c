@@ -46,7 +46,6 @@ char *read_line(void)
 		}
 		buffer[characters_read - 1] = '\0';
 	}
-	last_input = buffer;
 	return (buffer);
 }
 /**
@@ -64,7 +63,7 @@ char **split_string(char *input, const char *delimiter)
 	char *token = NULL, *input_copy;
 
 	words = NULL;
-	input_copy = strdup(input);
+	input_copy = _strdup(input);
 	if (!input_copy)
 	{
 		perror("strdup");
@@ -79,7 +78,7 @@ char **split_string(char *input, const char *delimiter)
 			free(input_copy);
 			return (NULL);
 		}
-		words[count] = strdup(token);
+		words[count] = _strdup(token);
 		if (!words[count])
 		{
 			free(input_copy);
@@ -162,7 +161,7 @@ char *trim_spaces(char *str)
 	/* If all spaces, return an empty string*/
 	if (*str == '\0')
 		return (str);
-	end = str + strlen(str) - 1;
+	end = str + _strlen(str) - 1;
 	while (end > str && isspace((unsigned char)*end))
 	{
 		end--;

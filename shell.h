@@ -20,6 +20,7 @@ void _putchar(char c);
 unsigned int _strlen(char *str);
 char *_strdup(char *str);
 int _strcmp(const char *str1, const char *str2);
+void *_realloc(void *ptr, size_t size);
 
 /***PID****/
 void get_ppid(void);

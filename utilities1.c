@@ -31,7 +31,7 @@ char *_strdup(char *str)
 		return (NULL);
 	while (str[index] != '\0')
 	{
-		duplicate = realloc(duplicate, (index + 1) * sizeof(char));
+		duplicate = realloc(duplicate, (index + 2) * sizeof(char));
 		if (!duplicate)
 			return (NULL);
 		duplicate[index] = str[index];
