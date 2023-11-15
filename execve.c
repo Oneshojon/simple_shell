@@ -30,16 +30,16 @@ int execute(char *argv[])
 		if (execve(path, argv, envp) == -1)
 		{
 			perror("./hsh");
-			free_environment_array(argv);
-			free_environment_array(envp);
+			free_environment_array(argv), free_environment_array(envp);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		wait(&status);
-		free_environment_array(envp);
-
+	do {
+		waitpid(child_pid, &status, WUNTRACED);
+	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	free_environment_array(envp);
 	}
 	return (status);
 }
