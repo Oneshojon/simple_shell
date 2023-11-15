@@ -28,7 +28,6 @@ int print_args(int ac, char **av)
  *
  *Return: pointer to line recovered
  */
-static char *last_input;
 char *read_line(void)
 {
 	char *buffer = NULL;
