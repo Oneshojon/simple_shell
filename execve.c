@@ -25,7 +25,8 @@ int execute(char *argv[])
 	{
 		if (execve(argv[0], argv, envp) == -1)
 		{
-			perror("./hsh"), free_environment_array(argv);
+			perror("./hsh");
+			free_environment_array(argv);
 			free_environment_array(envp);
 			exit(EXIT_FAILURE);
 		}
