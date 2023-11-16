@@ -1,5 +1,7 @@
 #ifndef SHELL_H
 #define SHELL_H
+#define _GNU_SOURCE
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -9,6 +11,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <ctype.h>
+#include <errno.h>
+
 
 /**** Printer ****/
 void _puts(char *ptr);
@@ -37,7 +42,6 @@ char *read_line(void);
 char **split_string(char *input, const char *delimiter);
 char **split_string2(char *str);
 char *trim_spaces(char *str);
-#include <ctype.h>
 
 
 /** GETLINE.C **/

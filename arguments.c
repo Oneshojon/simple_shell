@@ -36,12 +36,19 @@ char *read_line(void)
 
 	while (buffer == NULL || buffer[0] == '\0' || isspace(buffer[0]))
 	{
-		display_prompt();
+#ifdef PROMPT
+		if (printf("33sh> ") < 0) {
+			perror("write");
+		}
+#endif
+
 		characters_read = getline(&buffer, &buff_size, stdin);
 		if (characters_read == -1)
 		{
 			free(buffer);
+#ifdef PROMPT
 			_puts("\n");
+#endif
 			return (NULL);
 		}
 		buffer[characters_read - 1] = '\0';

@@ -7,6 +7,6 @@
  */
 void display_prompt(void)
 {
-	_puts("$$ ");
+	_puts("$ ");
 	fflush(stdout);
 }

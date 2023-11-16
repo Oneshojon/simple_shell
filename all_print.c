@@ -18,7 +18,7 @@ void _puts(char *ptr)
 	size_t len;
 	ssize_t writtenByte;
 
-	len = _strlen(ptr) + 1;
+	len = _strlen(ptr);
 	writtenByte = write(STDOUT_FILENO, ptr, len);
 	if (writtenByte == -1)
 	{
