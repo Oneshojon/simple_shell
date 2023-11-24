@@ -55,6 +55,7 @@ int child_father_pid(void);
 int exec_5x(void);
 int wait_father(void);
 int execute(char *argv[]);
+char *check_executable(char **argv);
 /**  env/PATH  **/
 #define PATH_MAX 4096
 extern char **environ;

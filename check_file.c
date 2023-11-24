@@ -45,14 +45,14 @@ char *find_executable(const char *filename)
 
 	if (path_env == NULL)
 	{
-		fprintf(stderr, "Error: PATH environment variable not set\n");
-		exit(EXIT_FAILURE);
+		fprintf(stderr, "./hsh: 1: %s: not found\n", filename);
+		exit(127);
 	}
 	path = strdup(path_env);
 	if (path == NULL)
 	{
 		perror("strdup");
-		exit(EXIT_FAILURE);
+		return (NULL);
 	}
 	token = strtok(path, ":");
 	while (token != NULL)
@@ -62,7 +62,7 @@ char *find_executable(const char *filename)
 		{
 			perror("malloc");
 			free(path);
-			exit(EXIT_FAILURE);
+			return (NULL);
 		}
 		snprintf(executable_path, PATH_MAX, "%s/%s", token, filename);
 		if (stat(executable_path, &st) == 0 && S_ISREG(st.st_mode) && (st.st_mode &

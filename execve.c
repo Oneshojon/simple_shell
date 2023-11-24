@@ -1,6 +1,5 @@
 
 #include "shell.h"
-
 /**
  *execute - suspends execution of parent process untill
  *		Child process completes
@@ -13,25 +12,22 @@ int execute(char *argv[])
 	int status = 0;
 	char **envp, *path = NULL;
 
-	if (argv == NULL || *argv == NULL)
-		return (0);
+	path = check_executable(argv);
+	if (path == NULL)
+		return (127);
 	envp = get_environment_array();
 	child_pid = fork();
 	if (child_pid == -1)
 	{
 		perror("./hsh");
-		return (1);
+		return (127);
 	}
 	if (child_pid == 0)
 	{
-		if (argv[0][0] != '/')
-			path = find_executable(argv[0]);
-		if (path == NULL)
-			path = argv[0];
 		if (execve(path, argv, envp) == -1)
 		{
-			perror("./hsh");
-			free_environment_array(argv), free_environment_array(envp);
+			perror("./hsh, rt");
+			free_environment_array(argv), free(path), free_environment_array(envp);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -43,4 +39,40 @@ int execute(char *argv[])
 	free_environment_array(envp);
 	}
 	return (status);
+}
+/**
+ *check_executable - Checks if executable file exists in environment
+ *@argv: Array of arguments
+ *
+ *Return: Nothing
+ */
+char *check_executable(char **argv)
+{
+	char *path = NULL;
+
+	if (argv == NULL || *argv == NULL)
+		return (NULL);
+	if (argv[0][0] != '/' && argv[0][0] != '.')
+	{
+		path = find_executable(argv[0]);
+		if (path == NULL)
+		{
+			fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
+			return (NULL);
+		}
+	}
+	else if (argv[0][0] == '.' && (argv[0][3] == '.' || argv[0][3] == '/'))
+	{
+		path = find_executable(argv[0] + 3);
+		if (path == NULL)
+		{
+			fprintf(stderr, "./hsh: 1: %s: not found\n", argv[0]);
+			return (NULL);
+		}
+	}
+	else
+	{
+		path = argv[0];
+	}
+	return (path);
 }

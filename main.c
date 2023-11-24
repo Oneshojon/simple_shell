@@ -6,25 +6,42 @@
  */
 int main(void)
 {
-	char *input, **argv;
+	char *line = NULL, **arr;
+	size_t size = 0;
+	ssize_t read;
+	int status = EXIT_SUCCESS;
 
 	/*display_prompt();*/
 	while (1)
 	{
-		input = read_line();
-		if (!input || !*input)
-			break;
-		argv = split_string(input, " \t\n\a\r");
-
-		if (argv == NULL || !*argv)
+#ifdef PROMPT
+		printf("$ ");
+#endif
+		read = getline(&line, &size, stdin);
+		if (read == -1)
 		{
-			free(input);
-			free_environment_array(argv);
-			continue;
+			if (feof(stdin))
+			{
+#ifdef PROMPT
+				printf("\n");
+#endif
+				break;
+			}
+			else
+			{
+				perror("getline");
+				break;
+			}
 		}
-		execute(argv);
-		free(input);
-		free_environment_array(argv);
+		if (read > 0 && line[read - 1] == '\n')
+			line[read - 1] = '\0';
+		arr = split_string(line, " \t\n\a\r");
+		status = execute(arr);
+		free_environment_array(arr);
+		if (status != 127)
+			status = EXIT_SUCCESS;
+
 	}
-	return (EXIT_SUCCESS);
+	free(line);
+	return (status);
 }

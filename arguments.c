@@ -24,7 +24,7 @@ int print_args(int ac, char **av)
 }
 
 /**
- *read_line - Prints the arguments entered
+ *read_line - reads user input
  *
  *Return: pointer to line recovered
  */
@@ -32,27 +32,17 @@ char *read_line(void)
 {
 	char *buffer = NULL;
 	size_t buff_size = 0;
-	ssize_t characters_read;
+	ssize_t read;
 
-	while (buffer == NULL || buffer[0] == '\0' || isspace(buffer[0]))
+	while ((read = getline(&buffer, &buff_size, stdin)) != -1)
 	{
-#ifdef PROMPT
-		if (printf("33sh> ") < 0)
-			perror("write");
-#endif
-
-		characters_read = getline(&buffer, &buff_size, stdin);
-		if (characters_read == -1)
-		{
-			free(buffer);
-#ifdef PROMPT
-			_puts("\n");
-#endif
-			return (NULL);
-		}
-		buffer[characters_read - 1] = '\0';
+		if (buffer[strlen(buffer) - 1] == '\n')
+			buffer[strlen(buffer) - 1] = '\0';
+		if (strlen(buffer) != 0)
+			return (buffer);
+		continue;
 	}
-	return (buffer);
+	return (NULL);
 }
 /**
  *split_string - Splits a string and returns an array of each word of
@@ -68,8 +58,7 @@ char **split_string(char *input, const char *delimiter)
 	char **words = NULL;
 	char *token = NULL, *input_copy;
 
-	words = NULL;
-	input_copy = _strdup(input);
+	input_copy = strdup(input);
 	if (!input_copy)
 	{
 		perror("strdup");
