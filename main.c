@@ -37,12 +37,12 @@ int main(void)
 		if (*arr == NULL)
 			status = (EXIT_SUCCESS);
 		else
-		{
-			free_environment_array(arr);
+		{	
 			if (status != 127)
 				status = EXIT_SUCCESS;
 		}
 	}
 	free(line);
+	free_environment_array(arr);	
 	return (status);
 }

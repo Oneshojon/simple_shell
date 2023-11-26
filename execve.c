@@ -38,6 +38,7 @@ int execute(char *argv[])
 	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	free_environment_array(envp);
 	}
+	free(path);
 	return (status);
 }
 /**

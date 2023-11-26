@@ -67,7 +67,10 @@ char *find_executable(const char *filename)
 		snprintf(executable_path, PATH_MAX, "%s/%s", token, filename);
 		if (stat(executable_path, &st) == 0 && S_ISREG(st.st_mode) && (st.st_mode &
 					S_IXUSR))
+		{
+			free(path);
 			return (executable_path);
+		}
 		free(executable_path);
 		token = strtok(NULL, ":");
 	}
