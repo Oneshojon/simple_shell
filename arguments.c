@@ -73,7 +73,7 @@ char **split_string(char *input, const char *delimiter)
 			free(input_copy);
 			return (NULL);
 		}
-		words[count] = _strdup(token);
+		words[count] = strdup(token);
 		if (!words[count])
 		{
 			free(input_copy);
@@ -86,8 +86,12 @@ char **split_string(char *input, const char *delimiter)
 	free(input_copy);
 	words = realloc(words, (count + 1) * sizeof(char *));
 	if (!words)
+	{
+		free_words(words, count);
 		return (NULL);
+	}
 	words[count] = NULL;
+
 	return (words);
 }
 /**

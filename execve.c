@@ -20,6 +20,7 @@ int execute(char *argv[])
 	if (child_pid == -1)
 	{
 		perror("./hsh");
+		free(path);
 		return (127);
 	}
 	if (child_pid == 0)
@@ -27,7 +28,7 @@ int execute(char *argv[])
 		if (execve(path, argv, envp) == -1)
 		{
 			perror("./hsh, rt");
-			free_environment_array(argv), free(path), free_environment_array(envp);
+			free(path), free_environment_array(envp);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -73,7 +74,8 @@ char *check_executable(char **argv)
 	}
 	else
 	{
-		path = argv[0];
+		path = strdup(argv[0]);
+		return (path);
 	}
 	return (path);
 }

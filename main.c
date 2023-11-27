@@ -34,15 +34,15 @@ int main(void)
 			line[read - 1] = '\0';
 		arr = split_string(line, " \t\n\a\r");
 		status = execute(arr);
-		if (*arr == NULL)
+		if (arr == NULL || *arr == NULL)
 			status = (EXIT_SUCCESS);
 		else
 		{
 			if (status != 127)
 				status = EXIT_SUCCESS;
 		}
+		free_environment_array(arr);
 	}
 	free(line);
-	free_environment_array(arr);
 	return (status);
 }
